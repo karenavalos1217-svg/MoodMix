@@ -1,0 +1,152 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #fff7fb, #fdeef5, #fbe4ee);
+  color: #5c4b51;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #c06c84;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #8d6b75;
+  margin-bottom: 35px;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 35px;
+}
+
+input {
+  padding: 14px 16px;
+  width: 300px;
+  border: 1px solid #f3c6d3;
+  border-radius: 14px;
+  outline: none;
+  background: #fffafd;
+  font-size: 1rem;
+  color: #5c4b51;
+  box-shadow: 0 4px 12px rgba(192, 108, 132, 0.08);
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #d98ca3;
+  box-shadow: 0 0 0 4px rgba(217, 140, 163, 0.15);
+}
+
+button {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f7b2c4, #e89ab0);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(232, 154, 176, 0.25);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(232, 154, 176, 0.3);
+}
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 18px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(192, 108, 132, 0.12);
+  border: 1px solid rgba(243, 198, 211, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(192, 108, 132, 0.18);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 8px 0;
+  color: #b76e79;
+  font-size: 1.2rem;
+}
+
+.card p {
+  margin: 6px 0;
+  color: #7c646c;
+  font-size: 0.95rem;
+}
+
+a {
+  display: inline-block;
+  margin-top: 12px;
+  text-decoration: none;
+  color: #c06c84;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #e07a98;
+}
+
+audio {
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
