@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Deezer App</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Buscar canciones por artista</h1>
+
+  <form action="/search" method="POST">
+    <input type="text" name="artist" placeholder="Escribe un artista" value="<%= artist %>" required>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <br>
+  <a href="/playlists">Ver playlists</a>
+
+  <hr>
+
+  <% if (tracks.length > 0) { %>
+    <% tracks.forEach(track => { %>
+      <div class="card">
+        <h3><%= track.title %></h3>
+        <p><strong>Artista:</strong> <%= track.artist.name %></p>
+        <p><strong>Álbum:</strong> <%= track.album.title %></p>
+        <p><strong>Duración:</strong> <%= track.duration %> segundos</p>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
