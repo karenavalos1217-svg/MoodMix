@@ -32,7 +32,7 @@ def search():
             "https://api.deezer.com/search",
             params={
                 "q": f'artist:"{artist}"',
-                "limit": 50
+                "limit": 60
             },
             timeout=10
         )

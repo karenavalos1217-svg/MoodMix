@@ -20,9 +20,13 @@
       {% if tracks %}
         {% for track in tracks %}
           <div class="card">
-            <img src="{{ track.album.cover_medium }}" alt="cover">
+            {% if track.album and track.album.cover_medium %}
+              <img src="{{ track.album.cover_medium }}" alt="">
+            {% endif %}
+
             <h3>{{ track.title }}</h3>
             <p>{{ track.artist.name }}</p>
+            <p>Duración: {{ (track.duration // 60) }}:{{ "%02d"|format(track.duration % 60) }}</p>
 
             {% if track.preview %}
               <audio controls>
@@ -37,15 +41,15 @@
         {% endfor %}
       {% else %}
         <div class="card">
-         
           <h3>Nombre de canción</h3>
           <p>Artista</p>
+          <p>Duración: 0:00</p>
           <a href="#">Escuchar</a>
         </div>
       {% endif %}
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  
 </body>
 </html>
