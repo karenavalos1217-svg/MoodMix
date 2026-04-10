@@ -25,6 +25,18 @@
         <p><strong>Artista:</strong> <%= track.artist.name %></p>
         <p><strong>Álbum:</strong> <%= track.album.title %></p>
         <p><strong>Duración:</strong> <%= track.duration %> segundos</p>
+
+        <% if (track.album && track.album.cover_medium) { %>
+          <img src="<%= track.album.cover_medium %>" width="120" alt="cover">
+        <% } %>
+
+        <% if (track.preview) { %>
+          <div>
+            <audio controls>
+              <source src="<%= track.preview %>" type="audio/mpeg">
+            </audio>
+          </div>
+        <% } %>
       </div>
     <% }) %>
   <% } %>
