@@ -45,6 +45,19 @@
           <p>Artista</p>
           <p>Duración: 0:00</p>
           <a href="#">Escuchar</a>
+          <form action="/add-to-playlist" method="POST">
+  <input type="hidden" name="track_id" value="{{ track.id }}">
+  <input type="hidden" name="title" value="{{ track.title }}">
+  <input type="hidden" name="artist" value="{{ track.artist.name }}">
+  <input type="hidden" name="album" value="{{ track.album.title }}">
+  <input type="hidden" name="duration" value="{{ track.duration }}">
+  <input type="hidden" name="preview" value="{{ track.preview }}">
+  <input type="hidden" name="cover" value="{{ track.album.cover_medium }}">
+
+  <input type="number" name="playlist_id" placeholder="ID playlist" required>
+
+  <button type="submit">Agregar</button>
+</form>
         </div>
       {% endif %}
     </div>

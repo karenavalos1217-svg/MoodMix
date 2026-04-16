@@ -6,7 +6,28 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <h1>Playlist</h1>
-  <a href="/playlists">Volver</a>
+  <div class="container">
+    <h1>Playlist</h1>
+
+    <p><strong>Duración total:</strong> {{ total_duration }} segundos</p>
+
+    <a href="/playlists">Volver</a>
+
+    <div class="results">
+      {% for song in songs %}
+        <div class="card">
+          <img src="{{ song[5] }}">
+          <h3>{{ song[0] }}</h3>
+          <p>{{ song[1] }}</p>
+
+          {% if song[4] %}
+            <audio controls>
+              <source src="{{ song[4] }}">
+            </audio>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 </body>
 </html>

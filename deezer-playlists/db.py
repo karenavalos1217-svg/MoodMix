@@ -6,9 +6,9 @@ load_dotenv()
 
 def get_connection():
     return psycopg2.connect(
-        user=os.getenv("DB_USER", "postgres"),
-        host=os.getenv("DB_HOST", "localhost"),
-        database=os.getenv("DB_NAME", "deezer_app"),
-        password=os.getenv("DB_PASSWORD", "TU_PASSWORD"),
-        port=os.getenv("DB_PORT", 5432)
+        user=os.getenv("DB_USER"),
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        password=os.getenv("DB_PASSWORD"),
+        port=os.getenv("DB_PORT")
     )

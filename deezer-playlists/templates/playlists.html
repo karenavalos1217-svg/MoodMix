@@ -6,7 +6,35 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <h1>Playlists</h1>
-  <a href="/">Volver</a>
+  <div class="container">
+    <h1>Mis Playlists</h1>
+    <p class="subtitle">Crea y guarda tus playlists</p>
+
+    <form class="search-box" action="/playlists/create" method="POST">
+      <input type="text" name="name" placeholder="Nombre de la playlist" required>
+      <button type="submit">Crear playlist</button>
+    </form>
+
+    <div style="text-align:center; margin-bottom: 25px;">
+      <a href="/">Volver al buscador</a>
+    </div>
+
+    <div class="results">
+      {% if playlists %}
+        {% for playlist in playlists %}
+          <div class="card">
+            <h3>{{ playlist[1] }}</h3>
+            <p>ID: {{ playlist[0] }}</p>
+            <a href="/playlists/{{ playlist[0] }}">Ver playlist</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card">
+          <h3>No hay playlists todavía</h3>
+          <p>Crea la primera desde el formulario de arriba.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>
