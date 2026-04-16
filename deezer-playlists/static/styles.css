@@ -150,3 +150,23 @@ audio {
     max-width: 300px;
   }
 }
+
+select {
+  padding: 12px 14px;
+  width: 100%;
+  border: 1px solid #f3c6d3;
+  border-radius: 12px;
+  outline: none;
+  background: #fffafd;
+  font-size: 1rem;
+  color: #5c4b51;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}

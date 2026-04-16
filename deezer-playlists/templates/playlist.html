@@ -6,7 +6,40 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <h1>Playlist</h1>
-  <a href="/playlists">Volver</a>
+  <div class="container">
+    <h1>Playlist</h1>
+
+    <p><strong>Duración total:</strong> {{ (total_duration // 60) }}:{{ "%02d"|format(total_duration % 60) }}</p>
+
+    <a href="/playlists">Volver</a>
+
+    <div class="results">
+      {% if songs %}
+        {% for song in songs %}
+          <div class="card">
+            {% if song[6] %}
+              <img src="{{ song[6] }}" alt="Portada del álbum">
+            {% endif %}
+
+            <h3>{{ song[1] }}</h3>
+            <p><strong>Artista:</strong> {{ song[2] }}</p>
+            <p><strong>Álbum:</strong> {{ song[3] }}</p>
+            <p><strong>Duración:</strong> {{ (song[4] // 60) }}:{{ "%02d"|format(song[4] % 60) }}</p>
+
+            {% if song[5] %}
+              <audio controls>
+                <source src="{{ song[5] }}" type="audio/mpeg">
+              </audio>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card">
+          <h3>Esta playlist no tiene canciones</h3>
+          <p>Agrega canciones desde el buscador principal.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>

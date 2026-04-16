@@ -6,7 +6,51 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <h1>Playlists</h1>
-  <a href="/">Volver</a>
+  <div class="container">
+    <h1>Mis Playlists</h1>
+    <p class="subtitle">Crea y guarda tus playlists</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="max-width:700px; margin: 0 auto 20px auto;">
+          {% for message in messages %}
+            <div style="background:#fffafd; border:1px solid #f3c6d3; color:#b76e79; padding:14px 18px; border-radius:14px; text-align:center; margin-bottom:10px;">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="search-box" action="/playlists/create" method="POST">
+      <input type="text" name="name" placeholder="Nombre de la playlist" required>
+      <button type="submit">Crear playlist</button>
+    </form>
+
+    <div style="text-align:center; margin-bottom: 25px;">
+      <a href="/">Volver al buscador</a>
+    </div>
+
+    <div class="results">
+      {% if playlists %}
+        {% for playlist in playlists %}
+          <div class="card">
+            <h3>{{ playlist[1] }}</h3>
+            <p>ID: {{ playlist[0] }}</p>
+            <a href="/playlists/{{ playlist[0] }}">Ver playlist</a>
+
+            <form action="/playlists/delete/{{ playlist[0] }}" method="POST" style="margin-top: 10px;">
+              <button type="submit">Eliminar</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card">
+          <h3>No hay playlists todavía</h3>
+          <p>Crea la primera desde el formulario de arriba.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>

@@ -5,24 +5,43 @@
   <title>MoodMix</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-
 <body>
   <div class="container">
     <h1>MoodMix</h1>
     <p class="subtitle">Encuentra canciones y crea una playlist bonita y personalizada</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="max-width:700px; margin: 0 auto 20px auto;">
+          {% for message in messages %}
+            <div style="background:#fffafd; border:1px solid #f3c6d3; color:#b76e79; padding:14px 18px; border-radius:14px; text-align:center; margin-bottom:10px;">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
     <form class="search-box" action="/search" method="POST">
       <input type="text" name="artist" placeholder="Busca una canción, artista o mood" value="{{ artist }}" required>
       <button type="submit">Buscar</button>
     </form>
 
-    <div class="results">
-      {% if tracks %}
+    <div style="text-align:center; margin-bottom: 25px;">
+      <a href="/playlists">Ver mis playlists</a>
+    </div>
+
+    {% if tracks %}
+      <div class="results">
         {% for track in tracks %}
           <div class="card">
-            <img src="{{ track.album.cover_medium }}" alt="cover">
+            {% if track.album and track.album.cover_medium %}
+              <img src="{{ track.album.cover_medium }}" alt="cover">
+            {% endif %}
+
             <h3>{{ track.title }}</h3>
             <p>{{ track.artist.name }}</p>
+            <p>Duración: {{ (track.duration // 60) }}:{{ "%02d"|format(track.duration % 60) }}</p>
 
             {% if track.preview %}
               <audio controls>
@@ -33,19 +52,54 @@
             {% if track.link %}
               <a href="{{ track.link }}" target="_blank">Escuchar</a>
             {% endif %}
+
+            {% if playlists %}
+              <form action="/add-to-playlist" method="POST" style="margin-top: 15px;">
+                <input type="hidden" name="track_id" value="{{ track.id }}">
+                <input type="hidden" name="title" value="{{ track.title }}">
+                <input type="hidden" name="artist" value="{{ track.artist.name }}">
+                <input type="hidden" name="album" value="{{ track.album.title }}">
+                <input type="hidden" name="duration" value="{{ track.duration }}">
+                <input type="hidden" name="preview" value="{{ track.preview }}">
+                <input type="hidden" name="cover" value="{{ track.album.cover_medium }}">
+
+                <select name="playlist_id" required>
+                  {% for p in playlists %}
+                    <option value="{{ p[0] }}">{{ p[1] }}</option>
+                  {% endfor %}
+                </select>
+
+                <button type="submit">Agregar</button>
+              </form>
+            {% else %}
+              <p style="margin-top: 15px;">Primero crea una playlist para poder agregar canciones.</p>
+            {% endif %}
           </div>
         {% endfor %}
-      {% else %}
-        <div class="card">
-         
-          <h3>Nombre de canción</h3>
-          <p>Artista</p>
-          <a href="#">Escuchar</a>
-        </div>
-      {% endif %}
-    </div>
-  </div>
+      </div>
+    {% else %}
+      <div style="margin-top: 30px;">
+        <h2 style="text-align:center; color:#b76e79; margin-bottom:20px;">Tus playlists</h2>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <div class="results">
+          {% if playlists %}
+            {% for p in playlists %}
+              <div class="card">
+                <h3>{{ p[1] }}</h3>
+                <p>ID: {{ p[0] }}</p>
+                <a href="/playlists/{{ p[0] }}">Ver playlist</a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="card">
+              <h3>No tienes playlists todavía</h3>
+              <p>Ve a la sección de playlists y crea la primera.</p>
+              <a href="/playlists">Ir a playlists</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
 </body>
 </html>
