@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MoodMix</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <div class="container">
+    <h1>MoodMix</h1>
+    <p class="subtitle">Encuentra canciones y crea una playlist bonita y personalizada</p>
+
+    <form class="search-box" action="/search" method="POST">
+      <input type="text" name="artist" placeholder="Busca una canción, artista o mood" value="{{ artist }}" required>
+      <button type="submit">Buscar</button>
+    </form>
+
+    <div class="results">
+      {% if tracks %}
+        {% for track in tracks %}
+          <div class="card">
+            <img src="{{ track.album.cover_medium }}" alt="cover">
+            <h3>{{ track.title }}</h3>
+            <p>{{ track.artist.name }}</p>
+
+            {% if track.preview %}
+              <audio controls>
+                <source src="{{ track.preview }}" type="audio/mpeg">
+              </audio>
+            {% endif %}
+
+            {% if track.link %}
+              <a href="{{ track.link }}" target="_blank">Escuchar</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card">
+         
+          <h3>Nombre de canción</h3>
+          <p>Artista</p>
+          <a href="#">Escuchar</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
