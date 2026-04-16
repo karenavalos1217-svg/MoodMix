@@ -9,7 +9,26 @@
   <div class="container">
     <h1>MoodMix</h1>
     <p class="subtitle">Encuentra canciones y crea una playlist bonita y personalizada</p>
-
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div style="max-width:700px; margin: 0 auto 20px auto;">
+      {% for message in messages %}
+        <div style="
+          background: #fffafd;
+          border: 1px solid #f3c6d3;
+          color: #b76e79;
+          padding: 14px 18px;
+          border-radius: 14px;
+          box-shadow: 0 4px 12px rgba(192, 108, 132, 0.08);
+          text-align: center;
+          margin-bottom: 10px;
+        ">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
     <form class="search-box" action="/search" method="POST">
       <input type="text" name="artist" placeholder="Busca una canción, artista o mood" value="{{ artist }}" required>
       <button type="submit">Buscar</button>
