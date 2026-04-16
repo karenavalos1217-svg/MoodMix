@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from db import get_connection
 
-# cargar variables de entorno (.env)
 load_dotenv()
 
 app = Flask(__name__)
@@ -22,21 +21,23 @@ def test_db():
     except Exception as e:
         return f"Error: {e}"
 
-# puerto
 PORT = int(os.getenv("PORT", 5000))
 
 
-# =========================
-# RUTA PRINCIPAL "/"
-# =========================
 @app.route("/")
 def index():
-    return render_template("index.html", tracks=[], artist="")
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT id, name FROM playlists ORDER BY id DESC")
+    playlists = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template("index.html", tracks=[], artist="", playlists=playlists)
 
 
-# =========================
-# BUSCAR EN DEEZER
-# =========================
 @app.route("/search", methods=["POST"])
 def search():
     artist = request.form.get("artist")
@@ -54,16 +55,45 @@ def search():
         data = response.json()
         tracks = data.get("data", [])
 
-        return render_template("index.html", tracks=tracks, artist=artist)
+        conn = get_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT id, name FROM playlists ORDER BY id DESC")
+        playlists = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return render_template("index.html", tracks=tracks, artist=artist, playlists=playlists)
 
     except Exception as error:
         print("Error con Deezer:", error)
-        return render_template("index.html", tracks=[], artist=artist)
 
+        conn = get_connection()
+        cur = conn.cursor()
 
-# =========================
-# PLAYLISTS
-# =========================
+        cur.execute("SELECT id, name FROM playlists ORDER BY id DESC")
+        playlists = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return render_template("index.html", tracks=[], artist=artist, playlists=playlists)
+#pa borrar
+@app.route("/playlists/delete/<int:id>", methods=["POST"])
+def delete_playlist(id):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # elimina la playlist (y sus canciones por el ON DELETE CASCADE)
+    cur.execute("DELETE FROM playlists WHERE id = %s", (id,))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect("/playlists")
+
 @app.route("/playlists")
 def playlists():
     conn = get_connection()
@@ -78,7 +108,6 @@ def playlists():
     return render_template("playlists.html", playlists=playlists)
 
 
-#pa crear las playlist
 @app.route("/playlists/create", methods=["POST"])
 def create_playlist():
     name = request.form.get("name")
@@ -100,7 +129,7 @@ def create_playlist():
 
     return redirect("/playlists")
 
-#pa crear las playlist
+
 @app.route("/add-to-playlist", methods=["POST"])
 def add_to_playlist():
     playlist_id = request.form.get("playlist_id")
@@ -125,8 +154,7 @@ def add_to_playlist():
     cur.close()
     conn.close()
 
-    return redirect("/playlists")
-
+    return redirect(f"/playlists/{playlist_id}")
 
 
 @app.route("/playlists/<int:id>")
@@ -139,7 +167,6 @@ def view_playlist(id):
         FROM playlist_songs
         WHERE playlist_id = %s
     """, (id,))
-
     songs = cur.fetchall()
 
     cur.execute("""
@@ -147,7 +174,6 @@ def view_playlist(id):
         FROM playlist_songs
         WHERE playlist_id = %s
     """, (id,))
-
     total_duration = cur.fetchone()[0]
 
     cur.close()
@@ -156,12 +182,6 @@ def view_playlist(id):
     return render_template("playlist.html", songs=songs, total_duration=total_duration)
 
 
-# =========================
-# RUN SERVER
-# =========================
 if __name__ == "__main__":
     print(f"Servidor corriendo en http://localhost:{PORT}")
     app.run(debug=True, port=PORT)
-
-
-    

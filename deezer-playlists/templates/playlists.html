@@ -25,7 +25,12 @@
           <div class="card">
             <h3>{{ playlist[1] }}</h3>
             <p>ID: {{ playlist[0] }}</p>
+
             <a href="/playlists/{{ playlist[0] }}">Ver playlist</a>
+
+            <form action="/playlists/delete/{{ playlist[0] }}" method="POST" style="margin-top: 10px;">
+              <button type="submit">Eliminar</button>
+            </form>
           </div>
         {% endfor %}
       {% else %}

@@ -9,7 +9,10 @@
   <div class="container">
     <h1>Playlist</h1>
 
-    <p><strong>Duración total:</strong> {{ total_duration }} segundos</p>
+
+    <p><strong>Duración total:</strong> 
+{{ (total_duration // 60) }}:{{ "%02d"|format(total_duration % 60) }}
+</p>
 
     <a href="/playlists">Volver</a>
 
